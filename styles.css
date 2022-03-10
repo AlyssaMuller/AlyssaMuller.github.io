@@ -135,9 +135,9 @@ select {
 		E = Edit Chocolate Button
 		d = Delete Chocolate Button
 	*/
-		"N N S S P P R R"
-		"N N D D D D D D"
-		"N N E E d d . .";
+		"N N R R . . E d"
+		"N N S S P P . ."
+		"N N D D D D D D";
 }
 
 #userInput {

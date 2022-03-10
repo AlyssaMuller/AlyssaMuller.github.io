@@ -96,10 +96,13 @@ class MyRequestHandler(BaseHTTPRequestHandler):
 
     def handleDeleteChocolate(self, member_id):
         db = ChocolatesDB()
-        db.deleteChocolate(member_id)
+        chocolateExists = db.getOneChocolate(member_id)
 
-        self.send_response(200)  # 200: ok
-        self.end_headers()
+        if chocolateExists:
+            db.deleteChocolate(member_id)
+            self.send_response(200)  # 200: ok
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
 
     def handleNotFound(self):
         self.send_response(404)  # 404: Not Found

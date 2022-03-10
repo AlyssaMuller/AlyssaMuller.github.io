@@ -1,9 +1,10 @@
 var addButton = document.querySelector("#add-button");
 var adding = true;
 var chocolateID = null;
-var sanitation = true;
+var sanitation = false;
 
 function getAndFormatData() {
+    //query las ladies
     var chocolateNameInput = document.querySelector("#chocolateName");
     var chocolateFlavorInput = document.querySelector("#chocolateFlavor");
     var chocolatePriceInput = document.querySelector("#chocolatePrice");
@@ -11,48 +12,14 @@ function getAndFormatData() {
     var chocolateDescriptionInput = document.querySelector("#chocolateDescription");
     var chocolateRatingInput = document.querySelector("#chocolateRating");
 
-    //step 2: capture the text
+    //step 2: capture text
     var chocolateName = chocolateNameInput.value;
-
-    if (chocolateName.length == 0 && sanitation)
-        chocolateName = "Chocolate";
-
-
     var chocolateFlavor = chocolateFlavorInput.value;
-
-    if (chocolateFlavor.length == 0 && sanitation)
-        chocolateFlavor = "Walnut";
-
-
     var chocolatePrice = chocolatePriceInput.value;
-
-    if (chocolatePrice.length == 0 && sanitation)
-        chocolatePrice = "$18.99";
-    else if (chocolatePrice[0] != "$" && sanitation)
-        chocolatePrice = "$" + chocolatePrice;
-
-
     var chocolateSize = chocolateSizeInput.value;
-
-    if (chocolateSize.length == 0 && sanitation)
-        chocolateSize = "8oz";
-    else if (!chocolateSize.includes("oz") && !chocolateSize.includes("lb") && sanitation)
-        chocolateSize += "oz";
-
-
     var chocolateDescription = chocolateDescriptionInput.value;
-
-    if (chocolateDescription.length == 0 && sanitation)
-        chocolateDescription = chocolateName + " " + chocolateFlavor + " is one of our best sellers";
-    else if (chocolateDescription[chocolateDescription.length - 1] != '.' && chocolateDescription[chocolateDescription.length - 1] != '!' && sanitation)
-        chocolateDescription += "!";
-
-
     var chocolateRating = chocolateRatingInput.value;
-
-    if (sanitation && (chocolateRating < 0 || chocolateRating > 5))
-        chocolateRating = 3;
-
+    //return formatted data
     var data = "name=" + encodeURIComponent(chocolateName);
     data += '&flavor=' + encodeURIComponent(chocolateFlavor);
     data += '&price=' + encodeURIComponent(chocolatePrice);
@@ -76,7 +43,7 @@ addButton.onclick = function () {
 
 //create a new chocolate on a server API
 function createChocolate(chocolateData) {
-    console.log('This is the data being sent to the server (for POST): ', chocolateData);
+    console.log('Sent data for update: ', chocolateData);
 
     fetch("http://localhost:8080/chocolates", { //dictionary
         method: 'POST',
@@ -85,8 +52,8 @@ function createChocolate(chocolateData) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(function (response) {
-        //here, the server has responded(due to AJAX being asynchronous-waiting for the response)
-        //so, reload chocolates from their server
+        //here, the server has responded(async AJAX)
+        //so, reload updated chocolates list
         loadChocolates();
     });
 };
@@ -110,7 +77,7 @@ function updateChocolate(chocolateData) {
 
 function deleteChocolateFromServer(chocolateID) {
     fetch("http://localhost:8080/chocolates/" + chocolateID, { method: "DELETE" }).then(function (response) {
-        console.log("We got into the delete response.");
+        console.log("js delete response function started yay");
         if (response.status == 200) {
             console.log("chocolate successfully deleted");
             loadChocolates();
@@ -151,7 +118,7 @@ function loadChocolates() {
                 /* var flavorDiv = document.createElement("div"); flavorDiv.innerHTML = chocolate.flavor; flavorDiv.classList.add("chocolate-flavor"); newListItem.appendChild(flavorDiv); */
 
                 var priceDiv = document.createElement("div");
-                priceDiv.innerHTML = "ONLY " + chocolate.price + "!!";
+                priceDiv.innerHTML = "ONLY " + chocolate.price + "!";
                 priceDiv.classList.add("chocolate-price");
                 newListItem.appendChild(priceDiv);
 
@@ -169,7 +136,7 @@ function loadChocolates() {
                 ratingDiv.innerHTML = "";
 
                 if (chocolate.rating == 5)
-                    ratingDiv.innerHTML += "🌟🌟🌟🌟🌟";
+                    ratingDiv.innerHTML += "⭐⭐⭐⭐⭐";
                 else {
                     for (var i = 0; i < chocolate.rating; i++)
                         ratingDiv.innerHTML += "⭐";
