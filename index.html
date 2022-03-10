@@ -7,37 +7,72 @@
 </head>
 
 <body>
-    <h1> Favorite Chocolate Foods</h1>
-    <div>
-        <label>Name:
-            <input type="text" id="chocolateName">
-        </label>
-        <label>
-            Flavor:
-            <input type="text" id="chocolateFlavor">
-        </label>
-        <label>
-            Price:
-            <input type="text" id="chocolatePrice">
-        </label>
-        <label>
-            Size:
-            <input type="text" id="chocolateSize">
-        </label>
-        <label>
-            Description:
-            <input type="text" id="chocolateDescription">
-        </label>
-        <label>
-            Rating:
-            <input type="int" id="chocolateRating">
-        </label>
-        <button id="add-button">Add Chocolate</button>
+    <div id="blackBoxHeader">
+        <h1>Le Cacao</h1>
+        <div class="red-line"></div>
     </div>
-    <ul id="chocolate-list">
-        <!--content here -->
-    </ul>
+
+
+    <div id="background-image">
+        <main>
+            <div id="inputDivs">
+                <div id="nameDiv">
+                    <label for="chocolateName">Name:&nbsp;</label>
+                    <input type="text" id="chocolateName">
+                </div>
+
+
+                <div id="flavorDiv">
+                    <label for="chocolateFlavor">Flavor:&nbsp;</label>
+                    <input type="text" id="chocolateFlavor">
+                </div>
+
+                <div id="priceDiv">
+                    <label for="chocolatePrice">Price:&nbsp;</label>
+                    <input type="text" id="chocolatePrice">
+                </div>
+
+                <div id="sizeDiv">
+                    <label for="chocolateSize">Size:&nbsp;</label>
+                    <input type="text" id="chocolateSize">
+                </div>
+
+                <div id="descriptionDiv">
+                    <label for="chocolateDescription">Description:&nbsp;</label>
+                    <input type="text" id="chocolateDescription">
+                </div>
+
+                <div id="ratingDiv">
+                    <label for="chocolateRating" class="dropDown"> Rating:&nbsp;</label>
+                    <select id="chocolateRating" class="dropDown">
+                        <option value="5"> 🌟🌟🌟🌟🌟</option>
+                        <option value="4"> ⭐⭐⭐⭐★</option>
+                        <option value="3"> ⭐⭐⭐★★</option>
+                        <option value="2"> ⭐⭐★★★</option>
+                        <option value="1"> ⭐★★★★</option>
+                        <option value="0"> ★★★★★</option>
+                    </select>
+                </div>
+
+                <div id="addButtonDiv">
+                    <button id="add-button">Add Chocolate</button>
+                </div>
+            </div>
+
+            <ul id="chocolate-list">
+                <!--content here -->
+            </ul>
+        </main>
+    </div>
+    <!-- </div> -->
+
+    <footer>
+        <div class="red-line"></div>
+        © 2022 Alyssa Muller<br>
+    </footer>
+
     <script src="app.js"></script>
+
 </body>
 
 </html>

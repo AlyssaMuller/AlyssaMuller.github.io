@@ -10,41 +10,39 @@ def dict_factory(cursor, row):  # dictionary function
 
 class ChocolatesDB:
     def __init__(self):
-        self.conn = sqlite3.connect("chocolates.db")
-        self.conn.row_factory = dict_factory
-        self.cur = self.conn.cursor()
-        exe = self.cur.execute
+        self.connection = sqlite3.connect("chocolates.db")
+        self.connection.row_factory = dict_factory
+        self.cursor = self.connection.cursor()
 
     def getAllChocolates(self):
-        self.cur.execute("SELECT * from CHOCOLATES")
-        return self.cur.fetchall()
+        self.cursor.execute("SELECT * from CHOCOLATES")
+        return self.cursor.fetchall()
 
-    def getOneRestaurant(self, chocolate_id):
+    def getOneChocolate(self, chocolate_id):
         data = [chocolate_id]
-        self.cur.execute(
-            "SELECT * FROM CHOCOLATES WHERE id=?", data)
-        return self.cur.fetchone()
+        self.cursor.execute("SELECT * FROM CHOCOLATES WHERE id=?", data)
+        return self.cursor.fetchone()
 
     # all other chocolate insert fields(5 for assignment)
-    def createRestaurant(self, name, flavor, price, size, description, rating):
-        data = [name, flavor, price, size, description, rating]
-        self.cur.execute(
-            "INSERT into CHOCOLATES(name, flavor, price,size,description, rating) VALUES (?,?,?,?,?,?)", data)
-        self.conn.commit()
+    def createChocolate(self, name, flavor, price, size, description, rating):
+        data = [name, flavor, price, size, description, int(rating)]
+        self.cursor.execute(
+            "INSERT into CHOCOLATES (name, flavor, price, size, description, rating) VALUES (?,?,?,?,?,?)", data)
+        self.connection.commit()
 
     # all the chocolate fields. similar to combining getOneRestaurant+ createRestaurant
-    def updateRestaurant(self, chocolateID, chocolateName, chocolateFlavor, chocolatePrice, chocolateSize, chocolateDescription, chocolateRating):
-        data=[chocolateID, chocolateName, chocolateFlavor, chocolatePrice,
-            chocolateSize, chocolateDescription, chocolateRating]
-        self.cur.execute(
-            "UPDATE from CHOCOLATES SET name=?, cuisine=?, rating=? WHERE id=?", data)
-        self.conn.commit()
+    def updateChocolate(self, chocolateID, name, flavor, price, size, description, rating):
+        data = [name, flavor, price, size,
+                description, int(rating), chocolateID]
+        self.cursor.execute(
+            "UPDATE CHOCOLATES SET name = ?, flavor = ?, price = ?, size = ?, description = ?, rating = ? WHERE id=?", data)
+        self.connection.commit()
 
-    def deleteRestaurant(self, chocolateID):
-        data=[id]
-        self.cur.execute("DELETE from CHOCOLATES WHERE id=?", data)
-        self.conn.commit()
+    def deleteChocolate(self, chocolateID):
+        data = [chocolateID]
+        self.cursor.execute("DELETE from CHOCOLATES WHERE id=?", data)
+        self.connection.commit()
 
 
-# self.cur.execute("SELECT * from chocolates")
-# print(self.cur.fetchall())
+# self.cursor.execute("SELECT * from chocolates")
+# print(self.cursor.fetchall())

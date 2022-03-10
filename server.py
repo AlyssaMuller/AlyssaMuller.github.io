@@ -1,13 +1,9 @@
 # CALL BY curl -i http://localhost:8080/path
-
-
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs
 from chocolatesDB import ChocolatesDB
 from socketserver import ThreadingMixIn
 import json
-
-# chocolateS = ["Panda Express", "In N Out", "Cafe Rio"]
 
 
 class MyRequestHandler(BaseHTTPRequestHandler):
@@ -19,7 +15,6 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         self.send_response(200)  # 200:ok
         # os bytes are read as text
         self.send_header("Content-Type", "application/json")
-        # self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
 
         # write to 'wfile'(aka response body/output stream)
@@ -31,13 +26,12 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(bytes(json.dumps(allRecords), "utf-8"))
 
     def handleRetrieveChocolate(self, member_id):
-        db = ChocolatesDB('chocolates.db')
+        db = ChocolatesDB()
         member = db.getOneChocolate(member_id)
 
         if member:
             self.send_response(200)  # 200:ok
             self.send_header("Content-Type", "application/json")
-            self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
             self.wfile.write(bytes(json.dumps(member), "utf-8"))
         else:
@@ -70,15 +64,45 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         # chocolateS.append(chocolate_name)
         # db = ChocolateDB('chocolates.db')
         db = ChocolatesDB()
-        db.createChocolate(
-            chocolate_name, chocolate_flavor, chocolate_price, chocolate_size, chocolate_description, chocolate_rating)
+        db.createChocolate(chocolate_name, chocolate_flavor, chocolate_price,
+                           chocolate_size, chocolate_description, chocolate_rating)
 
         # respond with success
         self.send_response(201)  # 201:created ok
         self.end_headers()
 
+    def handleUpdateChocolate(self, member_id):
+        length = self.headers["Content-Length"]
+
+        request_body = self.rfile.read(int(length)).decode("utf-8")
+        print("the raw request body: ", request_body)
+
+        parsed_body = parse_qs(request_body)
+        print("the parsed request body: ", parsed_body)
+
+        chocolate_name = parsed_body["name"][0]
+        chocolate_flavor = parsed_body["flavor"][0]
+        chocolate_price = parsed_body["price"][0]
+        chocolate_size = parsed_body["size"][0]
+        chocolate_description = parsed_body["description"][0]
+        chocolate_rating = parsed_body["rating"][0]
+
+        db = ChocolatesDB()
+        db.updateChocolate(member_id, chocolate_name, chocolate_flavor, chocolate_price,
+                           chocolate_size, chocolate_description, chocolate_rating)
+
+        self.send_response(200)  # 200: ok
+        self.end_headers()
+
+    def handleDeleteChocolate(self, member_id):
+        db = ChocolatesDB()
+        db.deleteChocolate(member_id)
+
+        self.send_response(200)  # 200: ok
+        self.end_headers()
+
     def handleNotFound(self):
-        self.send_response(404)  # notFound
+        self.send_response(404)  # 404: Not Found
         self.end_headers()
 
     def end_headers(self):
@@ -86,19 +110,20 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         super().end_headers()
 
     # handle any GET request
-    def do_GET(self):   # do_ is naming convention of methods
+    def do_GET(self):  # do_METHOD is naming convention of handling methods
         print("The request path is: ", self.path)
         path_parts = self.path.split("/")
+        collection_name = path_parts[1]
+
         if len(path_parts) > 2:
-            collection_name = path_parts[1]
             member_id = path_parts[2]
         else:
-            collection_name = path_parts[1]
             member_id = None
 
-        print(path_parts)
-        print(collection_name)
-        print(member_id)
+        # print(path_parts)
+        # print(collection_name)
+        # print(member_id)
+
         if collection_name == "chocolates":
             if member_id == None:
                 self.handleListChocolates()
@@ -118,19 +143,41 @@ class MyRequestHandler(BaseHTTPRequestHandler):
 
     def do_OPTIONS(self):
         self.send_response(200)
-        self.send_header("Access-Allow-Control-Origin", "*")
-        self.send_header("Access-Allow-Control-Origin",
+        self.send_header("Access-Control-Allow-Methods",
                          "GET, POST, PUT, DELETE, OPTIONS")
-        self.send_header("Access-Allow-Control-Origin", "Content-Type")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
 
     def do_DELETE(self):
-        self.send_response(200)
-        self.send_header("Access-Allow-Control-Origin", "*")
-        self.send_header("Access-Allow-Control-Origin",
-                         "GET, POST, PUT, DELETE, OPTIONS")
-        self.send_header("Access-Allow-Control-Origin", "Content-Type")
-        self.end_headers()
+        print("The request path is: ", self.path)
+
+        path_parts = self.path.split("/")
+        collection_name = path_parts[1]
+
+        if len(path_parts) > 2:
+            member_id = path_parts[2]
+        else:
+            member_id = None
+        if collection_name == "chocolates" and member_id is not None:
+            self.handleDeleteChocolate(member_id)
+        else:
+            self.handleNotFound()
+
+    def do_PUT(self):
+        print("The request path is: ", self.path)
+
+        path_parts = self.path.split("/")
+        collection_name = path_parts[1]
+
+        if len(path_parts) > 2:
+            member_id = path_parts[2]
+        else:
+            member_id = None
+
+        if collection_name == "chocolates" and member_id is not None:
+            self.handleUpdateChocolate(member_id)
+        else:
+            self.handleNotFound()
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):

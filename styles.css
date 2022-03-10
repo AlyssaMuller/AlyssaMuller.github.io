@@ -1,0 +1,277 @@
+@font-face {
+	font-family: creamCake;
+	src: url(fonts/Cream\ Cake.otf);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: sans-serif;
+	text-align: center;
+
+	padding: 0;
+	margin: 0;
+}
+
+#background-image {
+	background-image: url('images/gooey.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: fixed;
+
+	display: grid;
+	grid-template-columns: minmax(0px, 1fr) repeat(6, minmax(0, 175px)) minmax(0px, 1fr);
+}
+
+main {
+	min-height: 90vh;
+	grid-column: 2 / -2;
+}
+
+h1 {
+	display: inline-block;
+	margin-top: 1rem;
+	margin-bottom: 0.25rem;
+	font-size: 4rem;
+	font-family: 'creamCake', sans-serif;
+	color: #d0d9d4;
+	font-weight: normal;
+}
+
+ul {
+	margin-top: 0.25rem;
+	padding: 0;
+	background-color: #2E150310;
+	list-style: none;
+}
+
+li {
+	display: inline;
+}
+
+label {
+	text-align: left;
+	display: inline-block;
+}
+
+input {
+	color: #d0d9d4;
+	background-color: #7F6056;
+	font-weight: 600;
+	width: 100%;
+}
+
+select {
+	background-color: #7F6056;
+}
+
+#blackBoxHeader {
+	grid-column: 1 / -1;
+	color: white;
+	background-color: #2E1503;
+}
+
+#chocolate-list {
+	grid-column: 2 / -2;
+}
+
+#inputDivs {
+	grid-column: 2 / -2;
+	padding: 1rem;
+	margin: 0.5rem 0;
+	color: #d0d9d4;
+	background-color: #351803;
+	font-size: 1.5rem;
+	font-weight: 300;
+	text-align: left;
+
+	display: grid;
+	grid-template-rows: repeat(3, 1fr);
+	grid-template-columns: repeat(5, 1fr);
+	row-gap: 0.5rem;
+
+	grid-template-areas:
+
+		/*
+		N = Name
+		F = Flavor
+		P = Price
+		S = Size
+		D = Description
+		R = Rating
+		A = Add/Save Chocolate Button
+	*/
+		"N F S P R"
+		"D D D D D"
+		". A A A .";
+}
+
+.outputDivs {
+	padding: 1rem;
+	border-bottom: #2E1503 2px;
+	grid-column: 2 / -2;
+	background-color: #a9948a;
+	margin-bottom: 5px;
+	margin-right: 0;
+	font-size: 1.5rem;
+	text-align: left;
+
+	display: grid;
+	grid-template-rows: repeat(3, 1fr);
+	grid-template-columns: repeat(8, 1fr);
+	row-gap: 0.5rem;
+
+	grid-template-areas:
+
+		/*
+		N = Name and Flavor
+		F = Flavor
+		P = Price
+		S = Size
+		D = Description
+		R = Rating
+		E = Edit Chocolate Button
+		d = Delete Chocolate Button
+	*/
+		"N N S S P P R R"
+		"N N D D D D D D"
+		"N N E E d d . .";
+}
+
+#userInput {
+	height: 2em;
+	width: 30%;
+}
+
+.chocolate-name,
+.chocolate-flavor {
+	font-family: creamCake;
+	font-weight: normal;
+	font-size: 2em;
+}
+
+#nameDiv,
+.chocolate-name {
+	grid-area: N;
+}
+
+#flavorDiv {
+	grid-area: F;
+}
+
+#priceDiv,
+.chocolate-price {
+	grid-area: P;
+}
+
+#sizeDiv,
+.chocolate-size {
+	grid-area: S;
+}
+
+#descriptionDiv,
+.chocolate-description {
+	grid-area: D;
+}
+
+#ratingDiv,
+.chocolate-rating {
+	grid-area: R;
+}
+
+#addButtonDiv {
+	grid-area: A;
+}
+
+.editButton {
+	grid-area: E;
+}
+
+.deleteButton {
+	grid-area: d;
+}
+
+#nameDiv,
+.chocolate-name,
+#flavorDiv,
+.chocolate-flavor,
+#priceDiv,
+.chocolate-price,
+#sizeDiv,
+.chocolate-size,
+#descriptionDiv,
+.chocolate-description,
+#ratingDiv,
+.chocolate-rating {
+	display: flex;
+	align-items: stretch;
+
+	padding: 0.1rem 0.5rem;
+	height: 2rem;
+}
+
+#addButtonDiv {
+	text-align: center;
+}
+
+#add-button,
+.editButton,
+.deleteButton {
+	color: #d0d9d4;
+	background-color: #8c0b32;
+	font-size: 2rem;
+	font-weight: 600;
+	box-shadow: 2px 2px #191917;
+}
+
+/* .editButton,
+.deleteButton {
+	margin-top: 0.25rem;
+} */
+
+#add-button {
+	width: 100%;
+}
+
+.editButton,
+.deleteButton {
+	/* width: 80%; */
+	width: 100%;
+}
+
+#myList {
+	list-style-type: none;
+}
+
+li.categoryItem {
+	font-size: .6em;
+	float: left;
+	padding-left: 10px;
+	padding-top: -3px;
+	color: white;
+	width: 20%;
+	text-align: left;
+}
+
+.red-line {
+	grid-column: 1 / -1;
+	background-color: #8c0b32;
+	height: 0.25rem;
+}
+
+footer {
+	color: white;
+	background-color: #2E1503;
+	font-size: 1rem;
+	font-family: sans-serif;
+	font-style: italic;
+	text-align: center;
+	min-height: 3vh;
+	max-height: 5vh;
+}
+
+footer>div {
+	margin-bottom: 0.25rem;
+}

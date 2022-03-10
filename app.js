@@ -1,37 +1,58 @@
-var favChocolates = [];
-
 var addButton = document.querySelector("#add-button");
-console.log("button query: ", addButton);
-addButton.onclick = function () {
-    //call function to create new chocolate on server API
-    //TODO: capture text from input field
+var adding = true;
+var chocolateID = null;
+var sanitation = true;
 
-    //Step 1:query the input field
+function getAndFormatData() {
     var chocolateNameInput = document.querySelector("#chocolateName");
+    var chocolateFlavorInput = document.querySelector("#chocolateFlavor");
+    var chocolatePriceInput = document.querySelector("#chocolatePrice");
+    var chocolateSizeInput = document.querySelector("#chocolateSize");
+    var chocolateDescriptionInput = document.querySelector("#chocolateDescription");
+    var chocolateRatingInput = document.querySelector("#chocolateRating");
+
     //step 2: capture the text
     var chocolateName = chocolateNameInput.value;
 
-    var chocolateFlavorInput = document.querySelector("#chocolateFlavor");
+    if (chocolateName.length == 0 && sanitation)
+        chocolateName = "Chocolate";
+
+
     var chocolateFlavor = chocolateFlavorInput.value;
 
-    var chocolatePriceInput = document.querySelector("#chocolatePrice");
+    if (chocolateFlavor.length == 0 && sanitation)
+        chocolateFlavor = "Walnut";
+
+
     var chocolatePrice = chocolatePriceInput.value;
 
-    var chocolateSizeInput = document.querySelector("#chocolateSize");
+    if (chocolatePrice.length == 0 && sanitation)
+        chocolatePrice = "$18.99";
+    else if (chocolatePrice[0] != "$" && sanitation)
+        chocolatePrice = "$" + chocolatePrice;
+
+
     var chocolateSize = chocolateSizeInput.value;
 
-    var chocolateDescriptionInput = document.querySelector("#chocolateDescription");
+    if (chocolateSize.length == 0 && sanitation)
+        chocolateSize = "8oz";
+    else if (!chocolateSize.includes("oz") && !chocolateSize.includes("lb") && sanitation)
+        chocolateSize += "oz";
+
+
     var chocolateDescription = chocolateDescriptionInput.value;
 
-    var chocolateRatingInput = document.querySelector("#chocolateRating");
+    if (chocolateDescription.length == 0 && sanitation)
+        chocolateDescription = chocolateName + " " + chocolateFlavor + " is one of our best sellers";
+    else if (chocolateDescription[chocolateDescription.length - 1] != '.' && chocolateDescription[chocolateDescription.length - 1] != '!' && sanitation)
+        chocolateDescription += "!";
+
+
     var chocolateRating = chocolateRatingInput.value;
 
-    //step 3: call the create chocolate function, pass in text
-    createChocolate(chocolateName, chocolateFlavor, chocolatePrice, chocolateSize, chocolateDescription, chocolateRating);
-};
+    if (sanitation && (chocolateRating < 0 || chocolateRating > 5))
+        chocolateRating = 3;
 
-//create a new chocolate on a server API
-function createChocolate(chocolateName, chocolateFlavor, chocolatePrice, chocolateSize, chocolateDescription, chocolateRating) {
     var data = "name=" + encodeURIComponent(chocolateName);
     data += '&flavor=' + encodeURIComponent(chocolateFlavor);
     data += '&price=' + encodeURIComponent(chocolatePrice);
@@ -39,11 +60,27 @@ function createChocolate(chocolateName, chocolateFlavor, chocolatePrice, chocola
     data += '&description=' + encodeURIComponent(chocolateDescription);
     data += '&rating=' + encodeURIComponent(chocolateRating);
 
-    console.log('The is the data is going to send to the server: ', data);
+    return data;
+}
 
-    fetch("http://localhost:8080/chocolates", {    //dictionary
+addButton.onclick = function () {
+    var chocolateData = getAndFormatData();
+
+    if (adding == true)
+        createChocolate(chocolateData);
+    else {
+        updateChocolate(chocolateData);
+        addButton.innerHTML = "Add Chocolate";
+    }
+};
+
+//create a new chocolate on a server API
+function createChocolate(chocolateData) {
+    console.log('This is the data being sent to the server (for POST): ', chocolateData);
+
+    fetch("http://localhost:8080/chocolates", { //dictionary
         method: 'POST',
-        body: data,
+        body: chocolateData,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -51,18 +88,33 @@ function createChocolate(chocolateName, chocolateFlavor, chocolatePrice, chocola
         //here, the server has responded(due to AJAX being asynchronous-waiting for the response)
         //so, reload chocolates from their server
         loadChocolates();
-        //slight bug: list of chocolates is duplicated
     });
-    //here server has not responded
+};
+
+//create a new chocolate on a server API
+function updateChocolate(chocolateData) {
+    console.log('This is the data being sent to the server (for PUT): ', chocolateData);
+
+    adding = true;
+
+    fetch("http://localhost:8080/chocolates/" + chocolateID, {
+        method: 'PUT',
+        body: chocolateData,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(function (response) {
+        loadChocolates();
+    });
 };
 
 function deleteChocolateFromServer(chocolateID) {
-    fetch("http://localhost:8080/chocolates/" + chocolateId, { method: "DELETE" }).then(function (response) {
+    fetch("http://localhost:8080/chocolates/" + chocolateID, { method: "DELETE" }).then(function (response) {
+        console.log("We got into the delete response.");
         if (response.status == 200) {
             console.log("chocolate successfully deleted");
             loadChocolates();
         }
-
     });
 }
 
@@ -71,8 +123,8 @@ function loadChocolates() {
     fetch("http://localhost:8080/chocolates").then(function (response) {
         // The server has responded.
         response.json().then(function (data) {
-            favChocolates = data //this is the list
-            console.log("Chocolates from the server:", favChocolates);
+            serverChocolates = data //this is the list
+            console.log("Chocolates from the server:", serverChocolates);
 
             //step 1:query the PARENT element
             var chocolateList = document.querySelector("#chocolate-list");
@@ -83,71 +135,97 @@ function loadChocolates() {
 
             //loop over data immediately
             //for chocolates in faveChocolates, append each to the DOM list
-            favChocolates.forEach(function (chocolate) {
-
+            serverChocolates.forEach(function (chocolate) {
                 //see DOM insert/append code steps
-
                 //step 2: create the child element
 
-                var newListItem = document.createElement("li");
+                var newListItem = document.createElement("div");
+                newListItem.classList.add("outputDivs");
 
                 var nameDiv = document.createElement("div");
-                nameDiv.innerhtml = chocolate.name;
+                // Combining the name and flavor into one
+                nameDiv.innerHTML = chocolate.name + " " + chocolate.flavor;
                 nameDiv.classList.add("chocolate-name");
                 newListItem.appendChild(nameDiv);
 
-                var flavorDiv = document.createElement("div");
-                flavorDiv.innerhtml = chocolate.flavor;
-                flavorDiv.classList.add("chocolate-flavor");
-                newListItem.appendChild(flavorDiv);
+                /* var flavorDiv = document.createElement("div"); flavorDiv.innerHTML = chocolate.flavor; flavorDiv.classList.add("chocolate-flavor"); newListItem.appendChild(flavorDiv); */
 
                 var priceDiv = document.createElement("div");
-                priceDiv.innerhtml = chocolate.price;
+                priceDiv.innerHTML = "ONLY " + chocolate.price + "!!";
                 priceDiv.classList.add("chocolate-price");
                 newListItem.appendChild(priceDiv);
 
                 var sizeDiv = document.createElement("div");
-                sizeDiv.innerhtml = chocolate.size;
+                sizeDiv.innerHTML = "Size: " + chocolate.size;
                 sizeDiv.classList.add("chocolate-size");
                 newListItem.appendChild(sizeDiv);
 
                 var descriptionDiv = document.createElement("div");
-                descriptionDiv.innerhtml = chocolate.description;
+                descriptionDiv.innerHTML = chocolate.description;
                 descriptionDiv.classList.add("chocolate-description");
                 newListItem.appendChild(descriptionDiv);
 
                 var ratingDiv = document.createElement("div");
-                ratingDiv.innerhtml = chocolate.rating;
+                ratingDiv.innerHTML = "";
+
+                if (chocolate.rating == 5)
+                    ratingDiv.innerHTML += "🌟🌟🌟🌟🌟";
+                else {
+                    for (var i = 0; i < chocolate.rating; i++)
+                        ratingDiv.innerHTML += "⭐";
+
+                    for (var j = chocolate.rating; j < 5; j++)
+                        ratingDiv.innerHTML += "★";
+                }
+
                 ratingDiv.classList.add("chocolate-rating");
                 newListItem.appendChild(ratingDiv);
 
+                var editButton = document.createElement("button");
+                editButton.innerHTML = "Edit";
+                editButton.classList.add("editButton");
+                editButton.onclick = function () {
+                    var chocolateNameInput = document.querySelector("#chocolateName");
+                    var chocolateFlavorInput = document.querySelector("#chocolateFlavor");
+                    var chocolatePriceInput = document.querySelector("#chocolatePrice");
+                    var chocolateSizeInput = document.querySelector("#chocolateSize");
+                    var chocolateDescriptionInput = document.querySelector("#chocolateDescription");
+                    var chocolateRatingInput = document.querySelector("#chocolateRating");
+
+                    chocolateNameInput.value = chocolate.name;
+                    chocolateFlavorInput.value = chocolate.flavor;
+                    chocolatePriceInput.value = chocolate.price;
+                    chocolateSizeInput.value = chocolate.size;
+                    chocolateDescriptionInput.value = chocolate.description;
+                    chocolateRatingInput.value = chocolate.rating;
+
+                    adding = false;
+                    chocolateID = chocolate.id;
+                    addButton.innerHTML = "Save Chocolate";
+                };
+
+                newListItem.appendChild(editButton);
+
                 var deleteButton = document.createElement("button");
-                deleteButton.innerhtml = "Delete";
+                deleteButton.innerHTML = "Delete";
+                deleteButton.classList.add("deleteButton");
                 deleteButton.onclick = function () {
-                    console.log("delete button clicked", chocolate.id);
+                    console.log("delete button clicked, id: ", chocolate.id);
                     if (confirm("Are you sure?")) {
                         deleteChocolateFromServer(chocolate.id);
                     }
                 };
                 newListItem.appendChild(deleteButton);
 
-
-                var editButton = document.createElement("button");
-                editButton.innerhtml = "Edit";
-                editButton.onclick = function () {
-                    console.log("edit button clicked", chocolate.id);
-                    if (confirm("Are you sure?")) {
-                        //displayEditForm(chocolate.id, chocolate.name ...addButton.);
-                    }
-
-                };
-                newListItem.appendChild(editButton);
-
-                //step 3: append child to parent
+                // step 3: append child to parent
                 chocolateList.appendChild(newListItem);
             });
         });
     });
+}
+
+function displayEditForm(chocolateID, chocolateData) {
+    console.log("edit button clicked", chocolateID, chocolateData, ratingDiv);
 }
 
 //immediately load chocolates

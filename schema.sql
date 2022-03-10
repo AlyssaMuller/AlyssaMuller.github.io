@@ -1,5 +1,8 @@
-CREATE TABLE RESTAURANTS(
-id int PRIMARY KEY,
+CREATE TABLE CHOCOLATES(
+id INTEGER PRIMARY KEY,
 name text,
-cuisine text,
-rating int);
+size text,
+flavor text,
+price text,
+description text,
+rating INTEGER);
