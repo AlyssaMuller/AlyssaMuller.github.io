@@ -72,8 +72,8 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def handleUpdateChocolate(self, member_id):
-        length = self.headers["Content-Length"]
 
+        length = self.headers["Content-Length"]
         request_body = self.rfile.read(int(length)).decode("utf-8")
         print("the raw request body: ", request_body)
 
@@ -88,11 +88,16 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         chocolate_rating = parsed_body["rating"][0]
 
         db = ChocolatesDB()
-        db.updateChocolate(member_id, chocolate_name, chocolate_flavor, chocolate_price,
-                           chocolate_size, chocolate_description, chocolate_rating)
+        chocolateExists = db.getOneChocolate(member_id)
 
-        self.send_response(200)  # 200: ok
-        self.end_headers()
+        if chocolateExists:
+            db.updateChocolate(member_id, chocolate_name, chocolate_flavor, chocolate_price,
+                               chocolate_size, chocolate_description, chocolate_rating)
+
+            self.send_response(200)  # 200: ok
+            self.end_headers()
+        else:
+            self.handleNotFound()
 
     def handleDeleteChocolate(self, member_id):
         db = ChocolatesDB()
@@ -101,8 +106,9 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         if chocolateExists:
             db.deleteChocolate(member_id)
             self.send_response(200)  # 200: ok
-            self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
+        else:
+            self.handleNotFound()
 
     def handleNotFound(self):
         self.send_response(404)  # 404: Not Found

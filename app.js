@@ -1,7 +1,6 @@
 var addButton = document.querySelector("#add-button");
 var adding = true;
 var chocolateID = null;
-var sanitation = false;
 
 function getAndFormatData() {
     //Step1: Query las ladies
@@ -19,7 +18,7 @@ function getAndFormatData() {
     var chocolateSize = chocolateSizeInput.value;
     var chocolateDescription = chocolateDescriptionInput.value;
     var chocolateRating = chocolateRatingInput.value;
-    
+
     //return formatted data
     var data = "name=" + encodeURIComponent(chocolateName);
     data += '&flavor=' + encodeURIComponent(chocolateFlavor);
