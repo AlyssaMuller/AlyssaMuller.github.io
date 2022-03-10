@@ -1,16 +1,16 @@
 # Le Cacao
-
+Inspired by the lack of LoveCrunch granola, Le caco provides an easy way to find your favorite chocolate foods. 
 ## Resource
 
 **Chocolates**
 
-Attributes:
-* Name (string)
-* Size (string)
-* Flavor (string)
-* Price (string)
-* Description (string)
-* Rating (string)
+Attributes(Strings):
+* Name 
+* Size 
+* Flavor 
+* Price 
+* Description 
+* Rating 
 
 ## Schema
 

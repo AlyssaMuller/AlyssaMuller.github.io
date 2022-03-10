@@ -4,7 +4,7 @@ var chocolateID = null;
 var sanitation = false;
 
 function getAndFormatData() {
-    //query las ladies
+    //Step1: Query las ladies
     var chocolateNameInput = document.querySelector("#chocolateName");
     var chocolateFlavorInput = document.querySelector("#chocolateFlavor");
     var chocolatePriceInput = document.querySelector("#chocolatePrice");
@@ -19,6 +19,7 @@ function getAndFormatData() {
     var chocolateSize = chocolateSizeInput.value;
     var chocolateDescription = chocolateDescriptionInput.value;
     var chocolateRating = chocolateRatingInput.value;
+    
     //return formatted data
     var data = "name=" + encodeURIComponent(chocolateName);
     data += '&flavor=' + encodeURIComponent(chocolateFlavor);
