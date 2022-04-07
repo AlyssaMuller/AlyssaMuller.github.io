@@ -44,5 +44,39 @@ class ChocolatesDB:
         self.connection.commit()
 
 
-# self.cursor.execute("SELECT * from chocolates")
-# print(self.cursor.fetchall())
+class UsersDB:
+    def __init__(self):
+        self.connection = sqlite3.connect("chocolates.db")
+        self.connection.row_factory = dict_factory
+        self.cursor = self.connection.cursor()
+
+    def createUser(self, first_name, last_name, email, encrypted_password):
+        data = [first_name, last_name, email, encrypted_password]
+        self.cursor.execute(
+            "INSERT into USERS (first_name, last_name, email, encrypted_password) VALUES (?,?,?,?)", data)
+        self.connection.commit()
+
+    def getAllUsers(self):
+        self.cursor.execute("SELECT * from USERS")
+        return self.cursor.fetchall()
+
+    def getUserByEmail(self, email):
+        data = [email]
+        self.cursor.execute("SELECT * FROM USERS WHERE email=?", data)
+        return self.cursor.fetchone()
+
+    def getOneUser(self, user_id):
+        data = [user_id]
+        self.cursor.execute("SELECT * FROM USERS WHERE id=?", data)
+        return self.cursor.fetchone()
+
+    def updateUser(self, first_name, last_name, email, password):
+        data = [first_name, last_name, password, email]
+        self.cursor.execute(
+            "UPDATE USERS SET first_name=?, last_name=?, encrypted_password=?, WHERE email=?", data)
+        self.connection.commit()
+
+    def deleteUser(self, email):
+        data = [email]
+        self.cursor.execute("DELETE from USERS WHERE email=?", data)
+        self.connection.commit()

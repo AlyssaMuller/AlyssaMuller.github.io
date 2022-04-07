@@ -2,6 +2,8 @@ var addButton = document.querySelector("#add-button");
 var adding = true;
 var chocolateID = null;
 
+//each fetch request needs credentials:'include'
+
 function getAndFormatData() {
     //Step1: Query las ladies
     var chocolateNameInput = document.querySelector("#chocolateName");
@@ -47,6 +49,7 @@ function createChocolate(chocolateData) {
 
     fetch("http://localhost:8080/chocolates", { //dictionary
         method: 'POST',
+        credentials: 'include',
         body: chocolateData,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -66,6 +69,7 @@ function updateChocolate(chocolateData) {
 
     fetch("http://localhost:8080/chocolates/" + chocolateID, {
         method: 'PUT',
+        credentials: 'include',
         body: chocolateData,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -76,7 +80,11 @@ function updateChocolate(chocolateData) {
 };
 
 function deleteChocolateFromServer(chocolateID) {
-    fetch("http://localhost:8080/chocolates/" + chocolateID, { method: "DELETE" }).then(function (response) {
+    fetch("http://localhost:8080/chocolates/" + chocolateID, { method: "DELETE", credentials: 'include' }).then(function (response) {
+        if (response.status==401){
+            //Hide restaurant UI
+            //Show login or register UI
+            return;}
         console.log("js delete response function started yay");
         if (response.status == 200) {
             console.log("chocolate successfully deleted");
@@ -87,7 +95,11 @@ function deleteChocolateFromServer(chocolateID) {
 
 // load faveChocolates from the server as JSON data
 function loadChocolates() {
-    fetch("http://localhost:8080/chocolates").then(function (response) {
+    fetch("http://localhost:8080/chocolates", { credentials: 'include' }).then(function (response) {
+        if (response.status==401){
+            //Hide restaurant UI
+            //Show login or register UI
+            return;}
         // The server has responded.
         response.json().then(function (data) {
             serverChocolates = data //this is the list
