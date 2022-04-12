@@ -77,6 +77,8 @@ select {
 	grid-column: 2 / -2;
 }
 
+
+
 #inputDivs {
 	grid-column: 2 / -2;
 	padding: 1rem;
