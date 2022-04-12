@@ -1,25 +1,23 @@
 # Le Cacao
 Inspired by the lack of LoveCrunch granola, Le Caco provides an easy way to find your favorite chocolate foods. 
-## Resource
+## Resources
+attributes are strings unless otherwise noted
 
 **Chocolates**
-
-Attributes(Strings):
+* Chocolate ID(integer)
 * Name 
 * Size 
 * Flavor 
 * Price 
 * Description 
-* Rating 
+* Rating (integer)
 
 **Users**
-
-Attributes:
-* id 
-* first_name 
-* last_name 
-* email 
-* encrypted_password 
+* User ID (integer)
+* First Name 
+* Last Name 
+* Email 
+* Encrypted Password 
 
 This functionality is confirmed by Bcrypt. The inputted passwords are hashed and salted, then saved in the db. Upon login, the newly inputted password is hashed and salted the same way, then compare to the stored password if the email exists.   
 ## SQL Schema
