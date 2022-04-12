@@ -1,8 +1,56 @@
+var selectLoginButton = document.querySelector("#selectLoginButton");
+var selectRegisterButton = document.querySelector("#selectRegisterButton");
+var loginButton = document.querySelector("#loginButton");
+var registerButton = document.querySelector("#registerButton");
 var addButton = document.querySelector("#add-button");
+var chocolateUI = document.querySelector("#chocolateUI");
+var loginUI = document.querySelector("#loginUI");
+var registerUI = document.querySelector("#registerUI");
+var unauthUI = document.querySelector("#unauthUI");
 var adding = true;
 var chocolateID = null;
 
 //each fetch request needs credentials:'include'
+
+//Button options if not logged in
+selectLoginButton.onclick = function () {
+    loginUI.style.display = "block";
+    registerUI.style.display = "none";
+    unauthUI.style.display = "none";
+};
+
+selectRegisterButton.onclick = function () {
+    registerUI.style.display = "block"; //show register UI
+    loginUI.style.display = "none";
+    unauthUI.style.display = "none";
+};
+
+//after selected
+loginButton.onclick = function () {
+    var loginData = getLoginData();
+    createSession(loginData);
+    //login
+};
+
+registerButton.onclick = function () {
+    var registerData = getRegisterData();
+    createUser(registerData);
+    //register
+};
+
+
+//if logged in 
+
+addButton.onclick = function () {
+    var chocolateData = getAndFormatData();
+
+    if (adding == true)
+        createChocolate(chocolateData);
+    else {
+        updateChocolate(chocolateData);
+        addButton.innerHTML = "Add Chocolate";
+    }
+};
 
 function getAndFormatData() {
     //Step1: Query las ladies
@@ -30,18 +78,84 @@ function getAndFormatData() {
     data += '&rating=' + encodeURIComponent(chocolateRating);
 
     return data;
-}
-
-addButton.onclick = function () {
-    var chocolateData = getAndFormatData();
-
-    if (adding == true)
-        createChocolate(chocolateData);
-    else {
-        updateChocolate(chocolateData);
-        addButton.innerHTML = "Add Chocolate";
-    }
 };
+
+
+function getRegisterData() {
+    //Step1: Query 
+    var firstNameInput = document.querySelector("#firstName");
+    var lastNameInput = document.querySelector("#lastName");
+    var emailInput = document.querySelector("#email");
+    var passwordInput = document.querySelector("#password");
+
+    //step 2: capture text
+    var firstName = firstNameInput.value;
+    var lastName = lastNameInput.value;
+    var email = emailInput.value;
+    var password = passwordInput.value;
+
+    //return formatted data
+    var data = "first_name=" + encodeURIComponent(firstName);
+    data += '&last_name=' + encodeURIComponent(lastName);
+    data += '&email=' + encodeURIComponent(email);
+    data += '&password=' + encodeURIComponent(password);
+
+    return data;
+};
+
+//create a new chocolate on a server API
+function createUser(registerData) {
+    console.log('Sent data for registration: ', registerData);
+
+    fetch("http://localhost:8080/users", { //dictionary
+        method: 'POST',
+        credentials: 'include',
+        body: registerData,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(function (response) {
+        //here, the server has responded(async AJAX)
+        //so, reload updated chocolates list
+        loadChocolates();
+    });
+};
+
+
+function getLoginData() {
+    //Step1: Query 
+    var emailInput = document.querySelector("#loginEmail");
+    var passwordInput = document.querySelector("#loginPassword");
+    //step 2: capture text
+    var email = emailInput.value;
+    var password = passwordInput.value;
+    //return formatted data
+    var data = 'email=' + encodeURIComponent(email);
+    data += '&password=' + encodeURIComponent(password);
+
+    return data;
+};
+
+
+//create a new chocolate on a server API
+function createSession(loginData) {
+    console.log('Sent data for login: ', loginData);
+
+
+    fetch("http://localhost:8080/sessions", { //dictionary
+        method: 'POST',
+        credentials: 'include',
+        body: loginData,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(function (response) {
+        //here, the server has responded(async AJAX)
+        //so, reload updated chocolates list
+        loadChocolates();
+    });
+};
+
 
 //create a new chocolate on a server API
 function createChocolate(chocolateData) {
@@ -81,10 +195,11 @@ function updateChocolate(chocolateData) {
 
 function deleteChocolateFromServer(chocolateID) {
     fetch("http://localhost:8080/chocolates/" + chocolateID, { method: "DELETE", credentials: 'include' }).then(function (response) {
-        if (response.status==401){
+        if (response.status == 401) {
             //Hide restaurant UI
             //Show login or register UI
-            return;}
+            return;
+        }
         console.log("js delete response function started yay");
         if (response.status == 200) {
             console.log("chocolate successfully deleted");
@@ -96,10 +211,14 @@ function deleteChocolateFromServer(chocolateID) {
 // load faveChocolates from the server as JSON data
 function loadChocolates() {
     fetch("http://localhost:8080/chocolates", { credentials: 'include' }).then(function (response) {
-        if (response.status==401){
-            //Hide restaurant UI
-            //Show login or register UI
-            return;}
+        if (response.status == 401) {
+
+            unauthUI.style.display = "block";   //show login/register UI
+            chocolatesUI.style.display = "none"; //hide List
+            registerUI.style.display = "none"; //hide register
+            loginUI.style.display = "none"; //hide login
+            return;
+        }
         // The server has responded.
         response.json().then(function (data) {
             serverChocolates = data //this is the list

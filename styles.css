@@ -217,6 +217,10 @@ select {
 }
 
 #add-button,
+#selectLoginButton,
+#selectRegisterButton,
+#loginButton,
+#registerButton,
 .editButton,
 .deleteButton {
 	color: #d0d9d4;

@@ -15,54 +15,120 @@
 
     <div id="background-image">
         <main>
-            <div id="inputDivs">
-                <div id="nameDiv">
-                    <label for="chocolateName">Name:&nbsp;</label>
-                    <input type="text" id="chocolateName">
+            <div id="chocolatesUI">
+
+                <div id="inputDivs">
+                    <div id="nameDiv">
+                        <label for="chocolateName">Name:&nbsp;</label>
+                        <input type="text" id="chocolateName">
+                    </div>
+
+
+                    <div id="flavorDiv">
+                        <label for="chocolateFlavor">Flavor:&nbsp;</label>
+                        <input type="text" id="chocolateFlavor">
+                    </div>
+
+                    <div id="priceDiv">
+                        <label for="chocolatePrice">Price:&nbsp;</label>
+                        <input type="text" id="chocolatePrice">
+                    </div>
+
+                    <div id="sizeDiv">
+                        <label for="chocolateSize">Size:&nbsp;</label>
+                        <input type="text" id="chocolateSize">
+                    </div>
+
+                    <div id="descriptionDiv">
+                        <label for="chocolateDescription">Description:&nbsp;</label>
+                        <input type="text" id="chocolateDescription">
+                    </div>
+
+                    <div id="ratingDiv">
+                        <label for="chocolateRating" class="dropDown"> Rating:&nbsp;</label>
+                        <select id="chocolateRating" class="dropDown">
+                            <option value="5"> ⭐⭐⭐⭐⭐</option>
+                            <option value="4"> ⭐⭐⭐⭐★</option>
+                            <option value="3"> ⭐⭐⭐★★</option>
+                            <option value="2"> ⭐⭐★★★</option>
+                            <option value="1"> ⭐★★★★</option>
+                            <option value="0"> ★★★★★</option>
+                        </select>
+                    </div>
+
+                    <div id="addButtonDiv">
+                        <button id="add-button">Add Chocolate</button>
+                    </div>
+                </div>
+
+                <ul id="chocolate-list">
+                    <!--content here -->
+                </ul>
+            </div>
+            <!--End chocolates input/list section to be toggled-->
+
+            <div id="unauthUI">
+                <div id="selectLogin">
+                    <button id="selectLoginButton">Login</button>
+                </div>
+                <div id="selectRegister">
+                    <button id="selectRegisterButton">Register</button>
+                </div>
+
+            </div>
+
+            <!-- actual register or login UI-->
+            <div id="registerUI">
+
+                <div id="firstNameDiv">
+                    <label for="firstName">First Name:&nbsp;</label>
+                    <input type="text" id="firstName">
+                </div>
+
+                <div id="lastNameDiv">
+                    <label for="lastName">Last Name:&nbsp;</label>
+                    <input type="text" id="lastName">
+                </div>
+
+                <div id="emailDiv">
+                    <label for="email">Email:&nbsp;</label>
+                    <input type="text" id="email">
                 </div>
 
 
-                <div id="flavorDiv">
-                    <label for="chocolateFlavor">Flavor:&nbsp;</label>
-                    <input type="text" id="chocolateFlavor">
+                <div id="passwordDiv">
+                    <label for="password">Password:&nbsp;</label>
+                    <input type="text" id="password">
                 </div>
 
-                <div id="priceDiv">
-                    <label for="chocolatePrice">Price:&nbsp;</label>
-                    <input type="text" id="chocolatePrice">
-                </div>
 
-                <div id="sizeDiv">
-                    <label for="chocolateSize">Size:&nbsp;</label>
-                    <input type="text" id="chocolateSize">
-                </div>
-
-                <div id="descriptionDiv">
-                    <label for="chocolateDescription">Description:&nbsp;</label>
-                    <input type="text" id="chocolateDescription">
-                </div>
-
-                <div id="ratingDiv">
-                    <label for="chocolateRating" class="dropDown"> Rating:&nbsp;</label>
-                    <select id="chocolateRating" class="dropDown">
-                        <option value="5"> ⭐⭐⭐⭐⭐</option>
-                        <option value="4"> ⭐⭐⭐⭐★</option>
-                        <option value="3"> ⭐⭐⭐★★</option>
-                        <option value="2"> ⭐⭐★★★</option>
-                        <option value="1"> ⭐★★★★</option>
-                        <option value="0"> ★★★★★</option>
-                    </select>
-                </div>
-
-                <div id="addButtonDiv">
-                    <button id="add-button">Add Chocolate</button>
+                <div id="rButton">
+                    <button id="registerButton">Register</button>
                 </div>
             </div>
 
-            <ul id="chocolate-list">
-                <!--content here -->
-            </ul>
-        </main>
+            <!--Login UI-->
+            <div id="loginUI">
+
+                <div id="loginEmailDiv">
+                    <label for="loginEmail">Email:&nbsp;</label>
+                    <input type="text" id="loginEmail">
+                </div>
+
+
+                <div id="loginPasswordDiv">
+                    <label for="loginPassword">Password:&nbsp;</label>
+                    <input type="text" id="loginPassword">
+                </div>
+
+                <div id="lButton">
+                    <button id="loginButton">Login</button>
+                </div>
+            </div>
+
+
+    </div>
+    </main>
     </div>
     <!-- </div> -->
 

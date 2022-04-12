@@ -23,8 +23,8 @@ class MyRequestHandler(BaseHTTPRequestHandler):
 
     def sendCookies(self):
         for morsel in self.cookie.values():
-            """ morsel["samesite"] = "None"  # Prevents postMan
-            morsel["secure"] = True """
+            morsel["samesite"] = "None"  # Prevents postMan
+            morsel["secure"] = True
             # for any cookies, send as a header string
             self.send_header("Set-Cookie", morsel.OutputString())
 
@@ -51,7 +51,8 @@ class MyRequestHandler(BaseHTTPRequestHandler):
 
         print("NewSessionID: ", newSessionID)
         print("self.sessionData: ", self.sessionData)
-        print("self.cookie[\"sessionID\"]: ", self.cookie["sessionID"])
+        print("\n self.cookie: ", self.cookie["sessionID"])
+        print("\n")
 
     def handleCreateUser(self):
         parsed_body = self.parseRequest()
@@ -80,10 +81,13 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         print(user)
         if user != None:  # If valid user record found
             # step2: compare given password to the encrypted psswd
+            print("made it to user not none")
             if bcrypt.verify(password, user["encrypted_password"]):
-                self.handleSuccessCreated()  # success 201
+                print("made it after bcrypt")
                 # remember user's authenticated state
-                self.sessionData["userID"] = user['id']
+                self.sessionData["userID"] = user["id"]
+                self.handleSuccessCreated()  # success 201
+
             else:
                 self.handleNotAuthorized()
         else:
