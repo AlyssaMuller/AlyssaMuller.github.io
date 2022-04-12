@@ -122,7 +122,7 @@ function createUser(registerData) {
             //here, the server has responded(async AJAX)
             //so, reload updated chocolates list
             selectLoginButton.onclick();
-            userCreatedLogin.style.display="block";
+            userCreatedLogin.style.display = "block";
         }
         else if (response.status == 422) {
             console.log("User already exists. Try Logging In")
@@ -161,7 +161,7 @@ function createSession(loginData) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(function (response) {
-        if (response.status == 404, 401) {
+        if (response.status != 200) {
             unauthUI.style.display = "none";   //show login/register UI
             chocolatesUI.style.display = "none"; //hide List
             registerUI.style.display = "none"; //hide register

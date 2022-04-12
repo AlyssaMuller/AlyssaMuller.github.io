@@ -53,3 +53,7 @@ Retrieve chocolate member     | GET    | /chocolates/*\<id\>*
 Create chocolate member       | POST   | /chocolates
 Update chocolate member       | PUT    | /chocolates/*\<id\>*
 Delete chocolate member       | DELETE | /chocolates/*\<id\>*
+
+Create new user               | POST   | /users/*\<id\>*
+Retrieve user                 | GET    | /users/*\<id\>*
+Login to account              | POST   | /sessions/*\<id\>*
