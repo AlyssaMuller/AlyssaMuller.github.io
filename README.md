@@ -12,7 +12,16 @@ Attributes(Strings):
 * Description 
 * Rating 
 
-## Schema
+**Users**
+Attributes:
+*id 
+*first_name 
+*last_name 
+*email 
+*encrypted_password 
+
+This functionality is confirmed by Bcrypt. The inputted passwords are hashed and salted, then saved in the db. Upon login, the newly inputted password is hashed and salted the same way, then compare to the stored password if the email exists.   
+## SQL Schema
 
 ```sql
 CREATE TABLE CHOCOLATES(
@@ -23,19 +32,8 @@ flavor text,
 price text,
 description text,
 rating text);
-```
 
-**Users**
-Attributes:
-*id 
-*first_name 
-*last_name 
-*email 
-*encrypted_password 
-
-This functionality is confirmed by Bcrypt. The inputted passwords are hashed and salted, then saved in the db. Upon login, the newly inputted password is hashed and salted the same way, then compare to the stored password if the email exists. 
-
-```CREATE TABLE USERS(
+CREATE TABLE USERS(
 id INTEGER PRIMARY KEY,
 first_name text,
 last_name text,
@@ -43,6 +41,7 @@ email text,
 encrypted_password text
 );
 ```
+
 
 ## REST Endpoints
 
