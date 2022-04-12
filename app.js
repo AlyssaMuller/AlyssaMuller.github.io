@@ -41,6 +41,7 @@ registerButton.onclick = function () {
 
 //if logged in 
 
+
 addButton.onclick = function () {
     var chocolateData = getAndFormatData();
 
@@ -115,9 +116,19 @@ function createUser(registerData) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(function (response) {
-        //here, the server has responded(async AJAX)
-        //so, reload updated chocolates list
-        loadChocolates();
+        if (response.status != 201) {
+            var login = document.querySelector("#registerUI");
+            var errorDiv = document.createElement("div");
+            errorDiv.innerHTML = "<h1>" + "Login unsuccessful" + "</h1>";
+            errorDiv.classList.add("erorrDivs");
+            login.appendChild(errorDiv);
+        }
+        else {
+
+            //here, the server has responded(async AJAX)
+            //so, reload updated chocolates list
+            loadChocolates();
+        }
     });
 };
 
@@ -150,9 +161,23 @@ function createSession(loginData) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(function (response) {
-        //here, the server has responded(async AJAX)
-        //so, reload updated chocolates list
-        loadChocolates();
+        if (response.status == 404, 401) {
+            unauthUI.style.display = "none";   //show login/register UI
+            chocolatesUI.style.display = "none"; //hide List
+            registerUI.style.display = "none"; //hide register
+            loginUI.style.display = "block"; //hide login
+            console.log("Unable to login. Try again")
+            errorDiv.style.display = "block";
+
+            //Hide restaurant UI
+            //Show login or register UI
+            return;
+        };
+        if (response.status == 200) {
+            //here, the server has responded(async AJAX)
+            //so, reload updated chocolates list
+            loadChocolates();
+        }
     });
 };
 
@@ -196,28 +221,36 @@ function updateChocolate(chocolateData) {
 function deleteChocolateFromServer(chocolateID) {
     fetch("http://localhost:8080/chocolates/" + chocolateID, { method: "DELETE", credentials: 'include' }).then(function (response) {
         if (response.status == 401) {
+            unauthUI.style.display = "block";   //show login/register UI
+            chocolatesUI.style.display = "none"; //hide List
+            registerUI.style.display = "none"; //hide register
+            loginUI.style.display = "none"; //hide login
+
             //Hide restaurant UI
             //Show login or register UI
             return;
-        }
+        };
         console.log("js delete response function started yay");
         if (response.status == 200) {
             console.log("chocolate successfully deleted");
             loadChocolates();
-        }
+        };
     });
-}
+};
 
 // load faveChocolates from the server as JSON data
 function loadChocolates() {
     fetch("http://localhost:8080/chocolates", { credentials: 'include' }).then(function (response) {
         if (response.status == 401) {
+            console.log("Unable to access site content: Error 401",);
+
             unauthUI.style.display = "block";   //show login/register UI
             chocolatesUI.style.display = "none"; //hide List
             registerUI.style.display = "none"; //hide register
             loginUI.style.display = "none"; //hide login
             return;
-        } else if (response.status == 200) {
+        }
+        else if (response.status == 200) {
             unauthUI.style.display = "none";   //show login/register UI
             chocolatesUI.style.display = "grid"; //hide List
             registerUI.style.display = "none"; //hide register
