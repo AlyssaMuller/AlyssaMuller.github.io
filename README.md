@@ -1,9 +1,9 @@
 # Le Cacao
 Inspired by the lack of LoveCrunch granola, Le Caco provides an easy way to find your favorite chocolate foods. 
 ## Resources
-attributes are strings unless otherwise noted
+All attributes are strings unless otherwise noted
 
-**Chocolates**
+**Chocolates:**
 * Chocolate ID(integer)
 * Name 
 * Size 
@@ -12,7 +12,7 @@ attributes are strings unless otherwise noted
 * Description 
 * Rating (integer)
 
-**Users**
+**Users:**
 * User ID (integer)
 * First Name 
 * Last Name 
@@ -51,7 +51,6 @@ Retrieve chocolate member     | GET    | /chocolates/*\<id\>*
 Create chocolate member       | POST   | /chocolates
 Update chocolate member       | PUT    | /chocolates/*\<id\>*
 Delete chocolate member       | DELETE | /chocolates/*\<id\>*
-
 Create new user               | POST   | /users/*\<id\>*
 Retrieve user                 | GET    | /users/*\<id\>*
 Login to account              | POST   | /sessions/*\<id\>*
