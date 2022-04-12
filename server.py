@@ -61,10 +61,9 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         last_name = parsed_body['last_name'][0]
         email = parsed_body['email'][0]
         password = parsed_body['password'][0]
-
         db = UsersDB()
         if db.getUserByEmail(email) != None:
-            self.handleNotFound()
+            self.handle422()
             return
         encrypted_password = bcrypt.hash(password)
         db.createUser(first_name, last_name, email, encrypted_password)
@@ -92,16 +91,6 @@ class MyRequestHandler(BaseHTTPRequestHandler):
                 self.handleNotAuthorized()
         else:
             self.handleNotAuthorized()
-
-    def handleListUsers(self):
-        # write to 'wfile'(aka response body/output stream) with text as bytes
-        db = UsersDB()
-        allRecords = db.getAllUsers()
-        self.send_response(200)  # 200:ok status code
-        # os bytes are read as text
-        self.send_header("Content-Type", "application/json")
-        self.end_headers()
-        self.wfile.write(bytes(json.dumps(allRecords), "utf-8"))
 
     def handleRetrieveUser(self, member_id):
         db = UsersDB()
@@ -226,6 +215,11 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(bytes("Resource not found", "utf-8"))
 
+    def handle422(self):
+        self.send_response(422)  # 422: Unprocessable
+        self.end_headers()
+        self.wfile.write(bytes("Resource not found", "utf-8"))
+
     # handle any GET request
     def do_GET(self):  # do_METHOD is naming convention of handling methods
         self.loadSessionData()
@@ -246,7 +240,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
 
         elif collection_name == "users":
             if member_id == None:
-                self.handleListUsers()
+                self.handleNotFound()
             else:
                 self.handleRetrieveUser(member_id)
 

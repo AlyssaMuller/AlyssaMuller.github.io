@@ -209,6 +209,12 @@ select {
 	grid-area: d;
 }
 
+#registerUI div,
+#loginUI div {
+	margin-top: 5px;
+
+}
+
 #nameDiv,
 .chocolate-name,
 #flavorDiv,
@@ -228,7 +234,8 @@ select {
 	height: 2rem;
 }
 
-#addButtonDiv {
+#addButtonDiv,
+#userCreatedLogin {
 	text-align: center;
 }
 
@@ -246,19 +253,24 @@ select {
 	box-shadow: 2px 2px #191917;
 }
 
-#errorDiv h1 {
-
+#errorDiv h1,
+#errorRegistration h1,
+#userCreatedLogin h1 {
+	text-align: center;
 	color: #8c0b32;
 }
 
 #loginButton,
 #registerButton {
 	margin-top: 1em;
+	margin-bottom: 1em;
 	text-align: center;
 }
 
 #lButton,
-#rButton {
+#rButton,
+#errorDiv,
+#errorRegistration {
 	text-align: center;
 }
 

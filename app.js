@@ -116,19 +116,19 @@ function createUser(registerData) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(function (response) {
-        if (response.status != 201) {
-            var login = document.querySelector("#registerUI");
-            var errorDiv = document.createElement("div");
-            errorDiv.innerHTML = "<h1>" + "Login unsuccessful" + "</h1>";
-            errorDiv.classList.add("erorrDivs");
-            login.appendChild(errorDiv);
-        }
-        else {
+        if (response.status == 201) {
 
+            console.log("User created! Try Logging In");
             //here, the server has responded(async AJAX)
             //so, reload updated chocolates list
-            loadChocolates();
+            selectLoginButton.onclick();
+            userCreatedLogin.style.display="block";
         }
+        else if (response.status == 422) {
+            console.log("User already exists. Try Logging In")
+            errorRegistration.style.display = "block";
+        }
+
     });
 };
 
