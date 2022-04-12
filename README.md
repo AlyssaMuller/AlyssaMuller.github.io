@@ -13,12 +13,13 @@ Attributes(Strings):
 * Rating 
 
 **Users**
+
 Attributes:
-*id 
-*first_name 
-*last_name 
-*email 
-*encrypted_password 
+* id 
+* first_name 
+* last_name 
+* email 
+* encrypted_password 
 
 This functionality is confirmed by Bcrypt. The inputted passwords are hashed and salted, then saved in the db. Upon login, the newly inputted password is hashed and salted the same way, then compare to the stored password if the email exists.   
 ## SQL Schema
