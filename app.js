@@ -161,7 +161,12 @@ function createSession(loginData) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(function (response) {
-        if (response.status != 200) {
+        if (response.status == 200 || response.status == 201) {
+            //here, the server has responded(async AJAX)
+            //so, reload updated chocolates list
+            loadChocolates();
+        }
+        else {
             unauthUI.style.display = "none";   //show login/register UI
             chocolatesUI.style.display = "none"; //hide List
             registerUI.style.display = "none"; //hide register
@@ -173,11 +178,7 @@ function createSession(loginData) {
             //Show login or register UI
             return;
         };
-        if (response.status == 200) {
-            //here, the server has responded(async AJAX)
-            //so, reload updated chocolates list
-            loadChocolates();
-        }
+
     });
 };
 
