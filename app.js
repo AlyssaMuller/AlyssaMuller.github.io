@@ -161,6 +161,8 @@ function createSession(loginData) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(function (response) {
+
+        userCreatedLogin.style.display = "none";
         if (response.status == 200 || response.status == 201) {
             //here, the server has responded(async AJAX)
             //so, reload updated chocolates list
