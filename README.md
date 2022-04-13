@@ -19,7 +19,7 @@ All attributes are strings unless otherwise noted
 * Email 
 * Encrypted Password 
 
-This functionality is confirmed by Bcrypt. Upon registration of a new email address, inputted passwords are hashed and salted, then saved in the db alongside the other collected information. When logging in, the newly inputted password is hashed and salted the same way, then compare to the stored password if the email exists. Login is required to access the main chocolates page.
+This functionality is confirmed by Bcrypt. Upon registration of a new email address, inputted passwords are hashed and salted, then saved in the db alongside the other collected information. When logging in using a known email, the newly inputted password is verified with bcrypt, which encrypts & compares the password to the stored password. Login is required to access the main chocolates page.
 ## SQL Schema
 
 ```sql
@@ -51,6 +51,5 @@ Retrieve chocolate member     | GET    | /chocolates/*\<id\>*
 Create chocolate member       | POST   | /chocolates
 Update chocolate member       | PUT    | /chocolates/*\<id\>*
 Delete chocolate member       | DELETE | /chocolates/*\<id\>*
-Create new user               | POST   | /users/*\<id\>*
-Retrieve user                 | GET    | /users/*\<id\>*
-Login to account              | POST   | /sessions/*\<id\>*
+Create new user               | POST   | /users
+Login to account              | POST   | /sessions
