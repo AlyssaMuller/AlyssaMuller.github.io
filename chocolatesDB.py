@@ -72,9 +72,25 @@ class ChocolatesDB:
 
 class UsersDB:
     def __init__(self):
-        self.connection = sqlite3.connect("chocolates.db")
-        self.connection.row_factory = dict_factory
+        urllib.parse.uses_netloc.append("postgres")
+        url=urllib.parse.urlparse(os.environ["DATABASE_URL"])
+        self.connection = psycopg2.connect(
+            cursor_factory=psycopg2.extras.RealDictCursor,
+            database=url.path[1:],
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port
+        )
         self.cursor = self.connection.cursor()
+
+    def __del__(self): #destructer
+        self.connection.close()
+
+    def createChocolatesTable(self): #createNewSchema
+        createTable="CREATE TABLE IF NOT EXISTS CHOCOLATES(id SERIAL PRIMARY KEY, name text, size text, flavor text, price text, description text, rating INTEGER)"
+        self.cursor.execute(createTable)
+        self.connection.commit()
 
     def createUser(self, first_name, last_name, email, encrypted_password):
         data = [first_name, last_name, email, encrypted_password]
