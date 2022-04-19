@@ -6,7 +6,7 @@ from socketserver import ThreadingMixIn
 from http import cookies
 from session_store import SessionStore
 from passlib.hash import bcrypt
-
+import sys
 import json
 
 SESSION_STORE = SessionStore()  # global
@@ -335,7 +335,16 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 
 def run():
-    listen = ("127.0.0.1", 8080)  # server & port #
+    db=ChocolatesDB()
+    db.createChocolatesTable()
+    db=None
+    
+    port=8080
+    if len(sys.argv)>1:
+        #if running on Heroku
+        port=int(sys.argv[1]) #use cmd line input args
+
+    listen = ("0.0.0.0", port)  # server & port # Listen all the time (port "0.0.0.0")
     server = ThreadedHTTPServer(listen, MyRequestHandler)
 
     print("Server Running!")
