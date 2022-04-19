@@ -339,6 +339,10 @@ def run():
     db.createChocolatesTable()
     db=None #disconnect
 
+    db=UsersDB()
+    db.createUsersTable()
+    db=None #disconnect
+
     port=8080
     if len(sys.argv)>1:
         #if running on Heroku
