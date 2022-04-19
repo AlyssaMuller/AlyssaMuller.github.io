@@ -337,8 +337,8 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 def run():
     db=ChocolatesDB()
     db.createChocolatesTable()
-    db=None
-    
+    db=None #disconnect
+
     port=8080
     if len(sys.argv)>1:
         #if running on Heroku
