@@ -30,11 +30,6 @@ class ChocolatesDB:
     def __del__(self): #destructer
         self.connection.close()
 
-    def createUsersTable(self):
-        createTable="CREATE TABLE IF NOT EXISTS USERS(id SERIAL PRIMARY KEY, first_name text, last_name text, email text, encrypted_password text)"
-        self.cursor.execute(createTable)
-        self.connection.commit()
-
     def createChocolatesTable(self): #createNewSchema
         createTable="CREATE TABLE IF NOT EXISTS CHOCOLATES(id SERIAL PRIMARY KEY, name text, size text, flavor text, price text, description text, rating INTEGER)"
         self.cursor.execute(createTable)
@@ -87,8 +82,8 @@ class UsersDB:
     def __del__(self): #destructer
         self.connection.close()
 
-    def createChocolatesTable(self): #createNewSchema
-        createTable="CREATE TABLE IF NOT EXISTS CHOCOLATES(id SERIAL PRIMARY KEY, name text, size text, flavor text, price text, description text, rating INTEGER)"
+    def createUsersTable(self):
+        createTable="CREATE TABLE IF NOT EXISTS USERS(id SERIAL PRIMARY KEY, first_name text, last_name text, email text, encrypted_password text)"
         self.cursor.execute(createTable)
         self.connection.commit()
 
