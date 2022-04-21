@@ -121,6 +121,7 @@ function createUser(registerData) {
             console.log("User created! Try Logging In");
             //here, the server has responded(async AJAX)
             //so, reload updated chocolates list
+            loadChocolates();
             selectLoginButton.onclick();
             userCreatedLogin.style.display = "block";
         }
