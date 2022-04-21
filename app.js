@@ -108,7 +108,7 @@ function getRegisterData() {
 function createUser(registerData) {
     console.log('Sent data for registration: ', registerData);
 
-    fetch("http://localhost:8080/users", { //dictionary
+    fetch("https://git.heroku.com/chocolates-app.git/users", { //dictionary
         method: 'POST',
         credentials: 'include',
         body: registerData,
@@ -153,7 +153,7 @@ function createSession(loginData) {
     console.log('Sent data for login: ', loginData);
 
 
-    fetch("http://localhost:8080/sessions", { //dictionary
+    fetch("https://git.heroku.com/chocolates-app.git/sessions", { //dictionary
         method: 'POST',
         credentials: 'include',
         body: loginData,
@@ -190,7 +190,7 @@ function createSession(loginData) {
 function createChocolate(chocolateData) {
     console.log('Sent data for update: ', chocolateData);
 
-    fetch("http://localhost:8080/chocolates", { //dictionary
+    fetch("https://git.heroku.com/chocolates-app.git/chocolates", { //dictionary
         method: 'POST',
         credentials: 'include',
         body: chocolateData,
@@ -210,7 +210,7 @@ function updateChocolate(chocolateData) {
 
     adding = true;
 
-    fetch("http://localhost:8080/chocolates/" + chocolateID, {
+    fetch("https://git.heroku.com/chocolates-app.git/chocolates" + chocolateID, {
         method: 'PUT',
         credentials: 'include',
         body: chocolateData,
@@ -223,7 +223,7 @@ function updateChocolate(chocolateData) {
 };
 
 function deleteChocolateFromServer(chocolateID) {
-    fetch("http://localhost:8080/chocolates/" + chocolateID, { method: "DELETE", credentials: 'include' }).then(function (response) {
+    fetch("https://git.heroku.com/chocolates-app.git/chocolates" + chocolateID, { method: "DELETE", credentials: 'include' }).then(function (response) {
         if (response.status == 401) {
             unauthUI.style.display = "block";   //show login/register UI
             chocolatesUI.style.display = "none"; //hide List
@@ -244,7 +244,7 @@ function deleteChocolateFromServer(chocolateID) {
 
 // load faveChocolates from the server as JSON data
 function loadChocolates() {
-    fetch("http://localhost:8080/chocolates", { credentials: 'include' }).then(function (response) {
+    fetch("https://git.heroku.com/chocolates-app.git/chocolates", { credentials: 'include' }).then(function (response) {
         if (response.status == 401) {
             console.log("Unable to access site content: Error 401",);
 
