@@ -166,7 +166,7 @@ function createSession(loginData) {
         if (response.status == 200 || response.status == 201) {
             //here, the server has responded(async AJAX)
             //so, reload updated chocolates list
-            console.log("User added successfully")
+            console.log("User login successful")
             loadChocolates();
         }
         else {

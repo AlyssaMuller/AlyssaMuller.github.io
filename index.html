@@ -15,8 +15,7 @@
 
     <div id="background-image">
         <main>
-            <div id="chocolatesUI" hidden>
-
+            <div id="chocolatesUI" visibility="hidden">
                 <div id="inputDivs">
                     <div id="nameDiv">
                         <label for="chocolateName">Name:&nbsp;</label>
@@ -81,7 +80,7 @@
             </div>
 
             <!-- actual register or login UI-->
-            <div id="registerUI" hidden>
+            <div id="registerUI" visibility="hidden">
                 <div id="firstNameDiv">
                     <label for="firstName">First Name:&nbsp;</label>
                     <input type="text" id="firstName">
@@ -108,36 +107,36 @@
                     <button id="registerButton">Register</button>
                 </div>
 
-                <div id="errorRegistration" hidden></div>
-                <h1>Email already exists. Please login</h1>
+                <div id="errorRegistration" hidden>
+                    <h1>Email already exists. Please login</h1>
+                </div>
+
             </div>
 
-    </div>
+            <!--Login UI-->
+            <div id="loginUI" visibility="hidden">
 
-    <!--Login UI-->
-    <div id="loginUI" hidden>
-
-        <div id="loginEmailDiv">
-            <label for="loginEmail">Email:&nbsp;</label>
-            <input type="text" id="loginEmail">
-        </div>
+                <div id="loginEmailDiv">
+                    <label for="loginEmail">Email:&nbsp;</label>
+                    <input type="text" id="loginEmail">
+                </div>
 
 
-        <div id="loginPasswordDiv">
-            <label for="loginPassword">Password:&nbsp;</label>
-            <input type="text" id="loginPassword">
-        </div>
+                <div id="loginPasswordDiv">
+                    <label for="loginPassword">Password:&nbsp;</label>
+                    <input type="text" id="loginPassword">
+                </div>
 
-        <div id="lButton">
-            <button id="loginButton">Login</button>
-        </div>
-        <div id="errorDiv" hidden>
-            <h1>Login Unsuccessful. Try again</h1>
-        </div>
-        <div id="userCreatedLogin" hidden>
-            <h1>User created successfully </h1>
-        </div>
-    </div>
+                <div id="lButton">
+                    <button id="loginButton">Login</button>
+                </div>
+                <div id="errorDiv" hidden>
+                    <h1>Login Unsuccessful. Try again</h1>
+                </div>
+                <div id="userCreatedLogin" hidden>
+                    <h1>User created successfully </h1>
+                </div>
+            </div>
 
 
     </div>
