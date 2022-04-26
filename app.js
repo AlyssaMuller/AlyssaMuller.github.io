@@ -210,7 +210,7 @@ function updateChocolate(chocolateData) {
 
     adding = true;
 
-    fetch("https://chocolates-app.herokuapp.com/chocolates" + chocolateID, {
+    fetch("https://chocolates-app.herokuapp.com/chocolates/" + chocolateID, {
         method: 'PUT',
         credentials: 'include',
         body: chocolateData,
@@ -223,7 +223,7 @@ function updateChocolate(chocolateData) {
 };
 
 function deleteChocolateFromServer(chocolateID) {
-    fetch("https://chocolates-app.herokuapp.com/chocolates" + chocolateID, { method: "DELETE", credentials: 'include' }).then(function (response) {
+    fetch("https://chocolates-app.herokuapp.com/chocolates/" + chocolateID, { method: "DELETE", credentials: 'include' }).then(function (response) {
         if (response.status == 401) {
             unauthUI.style.display = "block";   //show login/register UI
             chocolatesUI.style.display = "none"; //hide List
